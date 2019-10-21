@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:newyork_times_clone_starter/news_item.dart';
 import 'loading_page.dart';
 import 'articles_list.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'news_item.dart';
 
 
 class NewsListScreen extends StatefulWidget {
@@ -12,6 +13,7 @@ class NewsListScreen extends StatefulWidget {
 }
 
 ArticleList articleList = ArticleList.fromJson(newsData);
+
 
 class _NewsListScreenState extends State<NewsListScreen> {
 
@@ -34,17 +36,13 @@ class _NewsListScreenState extends State<NewsListScreen> {
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
             var article = articleList.articles[index];
+            int hours = DateTime.parse(article.publishedAt).hour;
+            int currentHours = DateTime.now().hour;
+            print(hours);
+            print(currentHours);
             return GestureDetector(
               onTap: (){
-                _launchURL(url) async {
-
-                  if (await canLaunch(url)) {
-                    await launch(url,forceWebView: true);
-                  } else {
-                    throw 'Could not launch $url';
-                  }
-                }
-                _launchURL(article.url);
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NewsItemScreen(article)));
               },
               child: Card(
                 elevation: 2,
@@ -77,7 +75,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
                               child: Image(
                                 fit: BoxFit.fill,
                                 image: NetworkImage(
-                                    article.urlToImage != null ? article.urlToImage : "https://via.placeholder.com/700x500.jpg?text=Image+Not+Found"),
+                                   article.urlToImage  ),
                               ),
                             ),
                           ),
@@ -90,10 +88,18 @@ class _NewsListScreenState extends State<NewsListScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Expanded(
-                            flex: 5,
+                            flex: 3,
                             child: Container(
                               alignment: Alignment.topLeft,
                               child: Text('${article.source.name}',
+                                  style: TextStyle(color: Colors.grey)),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              alignment: Alignment.topLeft,
+                              child: Text('${currentHours-hours} hours ago',
                                   style: TextStyle(color: Colors.grey)),
                             ),
                           ),
@@ -102,8 +108,8 @@ class _NewsListScreenState extends State<NewsListScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                Icon(Icons.share),
-                                Icon(Icons.bookmark_border)
+                                Icon(Icons.share, size: 16),
+                                Icon(Icons.bookmark_border, size: 16)
                               ],
                             ),
                           ),
@@ -123,3 +129,4 @@ class _NewsListScreenState extends State<NewsListScreen> {
     );
   }
 }
+

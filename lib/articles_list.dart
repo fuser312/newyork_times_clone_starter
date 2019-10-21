@@ -40,11 +40,11 @@ class Articles {
 
   Articles.fromJson(Map<String, dynamic> newsList) {
     source = newsList['source'] != null ? new Source.fromJson(newsList['source']) : "Unidentified Source";
-    author = author == null ? "Unidentified Author" : newsList['author'];
+    author = newsList["author"] == null ? "Unidentified Author" : newsList['author'];
     title = newsList['title'];
-    description = description == null ? "$fillerDesc" : newsList['description'];
+    description = newsList["description"] == null ? "$fillerDesc" : newsList['description'];
     url = newsList['url'];
-    urlToImage = urlToImage ;
+    urlToImage = newsList["urlToImage"] == null? "https://via.placeholder.com/700x500.jpg?text=Image+Not+Found" : newsList["urlToImage"] ;
     publishedAt = newsList['publishedAt'];
     content = newsList['content'];
   }
