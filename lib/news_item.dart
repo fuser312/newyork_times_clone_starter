@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'articles_list.dart';
-//import 'news_list_page.dart';
+import 'image_page.dart';
 
 class NewsItemScreen extends StatefulWidget {
   final Articles article;
@@ -64,12 +64,17 @@ class _NewsItemScreenState extends State<NewsItemScreen> {
               ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Hero(
-                  tag: "newsImage"+widget.article.title,
-                  child: Image(
-                  fit: BoxFit.fitHeight,
-                  image: NetworkImage(
-                      widget.article.urlToImage),
+              child: GestureDetector(
+                    onTap: (){
+                      Navigator.push((context),MaterialPageRoute(builder: (context) => ImageScreen(widget.article.urlToImage)));
+                    },
+                    child: Hero(
+                    tag: "newsImage"+widget.article.title,
+                    child: Image(
+                    fit: BoxFit.fitHeight,
+                    image: NetworkImage(
+                        widget.article.urlToImage),
+                  ),
                 ),
               )
             ),
