@@ -64,10 +64,13 @@ class _NewsItemScreenState extends State<NewsItemScreen> {
               ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Image(
-                fit: BoxFit.fitHeight,
-                image: NetworkImage(
-                    widget.article.urlToImage),
+              child: Hero(
+                  tag: "newsImage"+widget.article.title,
+                  child: Image(
+                  fit: BoxFit.fitHeight,
+                  image: NetworkImage(
+                      widget.article.urlToImage),
+                ),
               )
             ),
             Padding(
