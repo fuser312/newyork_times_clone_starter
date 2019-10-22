@@ -17,7 +17,7 @@ class _NewsItemScreenState extends State<NewsItemScreen> {
           backgroundColor: Colors.white,
         title: Text(
           'India',
-          style: TextStyle(color: Colors.grey, fontSize: 24,fontFamily: 'SansSerif'),
+          style: TextStyle(color: Colors.grey, fontSize: 24,fontFamily: 'Serif'),
         ),
         leading: IconButton(
           onPressed: () {Navigator.pop(context);},
@@ -60,7 +60,7 @@ class _NewsItemScreenState extends State<NewsItemScreen> {
             Padding(
               padding: EdgeInsets.all(10),
               child: Text(widget.article.description,
-                  style: TextStyle(fontSize: 20,fontFamily: 'SansSerif')),
+                  style: TextStyle(fontSize: 20,fontFamily: 'Serif')),
               ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
@@ -75,7 +75,7 @@ class _NewsItemScreenState extends State<NewsItemScreen> {
               child: Text(
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                 style: TextStyle(
-                    color: Colors.grey,fontFamily: 'SansSerif'),
+                    color: Colors.grey,fontFamily: 'Serif'),
               ),
             ),
 
@@ -89,13 +89,13 @@ class _NewsItemScreenState extends State<NewsItemScreen> {
               padding: EdgeInsets.fromLTRB(10,10,0,5),
               child: Text("${DateTime.parse(widget.article.publishedAt).day} - ${DateTime.parse(widget.article.publishedAt).month} - ${DateTime.parse(widget.article.publishedAt).year}",
                   style: TextStyle(
-                      color: Colors.red,fontFamily: 'SansSerif',fontSize: 16)),
+                      color: Colors.red,fontFamily: 'Serif',fontSize: 16)),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(8,8,8,0),
               child: Text("${widget.article.content}",
                   style: TextStyle(fontSize: 20,
-                      color: Colors.black,fontFamily: 'SansSerif')),
+                      color: Colors.black,fontFamily: 'Serif')),
             )
           ],
         ),

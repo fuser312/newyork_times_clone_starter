@@ -38,8 +38,6 @@ class _NewsListScreenState extends State<NewsListScreen> {
             var article = articleList.articles[index];
             int hours = DateTime.parse(article.publishedAt).hour;
             int currentHours = DateTime.now().hour;
-            print(hours);
-            print(currentHours);
             return GestureDetector(
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => NewsItemScreen(article)));
@@ -88,21 +86,26 @@ class _NewsListScreenState extends State<NewsListScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Expanded(
-                            flex: 3,
-                            child: Container(
-                              alignment: Alignment.topLeft,
-                              child: Text('${article.source.name}',
-                                  style: TextStyle(color: Colors.grey)),
+                            flex: 6,
+                            child: Row(
+                              children: <Widget>[
+                                Container(
+                                  alignment: Alignment.topLeft,
+                                  child: Text('${article.source.name}',
+                                      style: TextStyle(color: Colors.grey)),
+                                ),
+                                Container(
+                              //alignment: Alignment.topLeft,
+                              child: Padding(
+                                padding: EdgeInsets.fromLTRB(4, 0, 0, 0),
+                                child: Text('${currentHours-hours} hours ago',
+                                    style: TextStyle(color: Colors.grey)),
+                              ),
+                            ),
+                              ],
                             ),
                           ),
-                          Expanded(
-                            flex: 3,
-                            child: Container(
-                              alignment: Alignment.topLeft,
-                              child: Text('${currentHours-hours} hours ago',
-                                  style: TextStyle(color: Colors.grey)),
-                            ),
-                          ),
+                          
                           Expanded(
                             flex: 1,
                             child: Row(
