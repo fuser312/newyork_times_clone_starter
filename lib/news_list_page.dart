@@ -5,8 +5,6 @@ import 'loading_page.dart';
 import 'articles_list.dart';
 import 'news_item.dart';
 import 'network_helper.dart';
-//import 'package:pull_to_refresh/pull_to_refresh.dart';
-
 
 class NewsListScreen extends StatefulWidget {
 
@@ -14,7 +12,15 @@ class NewsListScreen extends StatefulWidget {
   _NewsListScreenState createState() => _NewsListScreenState();
 }
 
-ArticleList articleList = ArticleList.fromJson(newsData);
+ArticleList articleListIndia = ArticleList.fromJson(newsDataIndia);
+ArticleList articleListAustralia = ArticleList.fromJson(newsDataAustralia);
+ArticleList articleListUSA = ArticleList.fromJson(newsDataUSA);
+ArticleList articleListNewzealand = ArticleList.fromJson(newsDataNewZealand);
+ArticleList articleListIndonesia = ArticleList.fromJson(newsDataIndonesia);
+
+
+
+
 
 
 class _NewsListScreenState extends State<NewsListScreen> {
@@ -22,34 +28,53 @@ class _NewsListScreenState extends State<NewsListScreen> {
   await Future.delayed(Duration(seconds:2));
     NetworkHelper helper = NetworkHelper(
         'https://newsapi.org/v2/top-headlines?country=in&apiKey=935771cc37e94628b98cf4a8f3e66d44');
-    newsData = await helper.getTopHeadlines();
+    newsDataIndia = await helper.getTopHeadlines();
   setState(() {
 
   });
- print('updating news...');
 }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'Fuser News',
-          style: TextStyle(
-              fontSize: 32, color: Colors.black, fontFamily: 'OldLondon'),
-        ),
-        centerTitle: true,
+    return DefaultTabController(
+      length: 5,
+        child: Scaffold(
+          appBar: AppBar(
+            bottom: TabBar(
+              isScrollable: true,
+              indicatorColor: Colors.black,
+              tabs: <Widget>[
+                Text("INDIA", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400),),
+                Text("AUSTRALIA", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400),),
+                Text("USA", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400),),
+                Text("NEWZEALAND", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400),),
+                Text("INDONESIA", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400),),
+              ],
+            ),
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            title: Text("Fuser Times", style: TextStyle(fontSize: 32, fontFamily: "OldLondon",fontWeight: FontWeight.bold, color: Colors.black ),),
+          ),
+        body: TabBarView(children: <Widget>[
+          buildContainer(articleListIndia),
+          buildContainer(articleListAustralia),
+          buildContainer(articleListUSA),
+          buildContainer(articleListNewzealand),
+          buildContainer(articleListIndonesia)
+        ],),
       ),
-      body: Container(
+    );
+  }
+
+  Container buildContainer(ArticleList articles) {
+    return Container(
       child: RefreshIndicator(
           onRefresh: newNewsList,
           child: ListView.builder(
           scrollDirection: Axis.vertical,
-          itemCount: articleList.totalResults,
+          itemCount: articles.totalResults,
           shrinkWrap: true,
           itemBuilder: (BuildContext context, int index) {
-            var article = articleList.articles[index];
+            var article = articles.articles[index];
             int hours = DateTime.parse(article.publishedAt).hour;
             int currentHours = DateTime.now().hour;
             return GestureDetector(
@@ -77,7 +102,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
                             flex: 2,
                             child: Text(
                               article.description,
-                              maxLines: 4,
+                              maxLines: 4, textAlign: TextAlign.left,
                             ),
                           ),
                           Flexible(
@@ -146,8 +171,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
           },
         ),
       ),
-        ),
-    );
+        );
   }
 }
 
