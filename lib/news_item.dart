@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'articles_list.dart';
 import 'image_page.dart';
 
 class NewsItemScreen extends StatefulWidget {
   final Articles article;
-  NewsItemScreen(this.article);
+  final String countryName;
+  NewsItemScreen(this.article, this.countryName);
   @override
   _NewsItemScreenState createState() => _NewsItemScreenState();
 }
 class _NewsItemScreenState extends State<NewsItemScreen> {
+ 
   @override
   Widget build(BuildContext context) {
     return (
@@ -16,7 +19,7 @@ class _NewsItemScreenState extends State<NewsItemScreen> {
         appBar: AppBar(
           backgroundColor: Colors.white,
         title: Text(
-          'India',
+          widget.countryName,
           style: TextStyle(color: Colors.grey, fontSize: 24,fontFamily: 'Serif'),
         ),
         leading: IconButton(
@@ -101,9 +104,19 @@ class _NewsItemScreenState extends State<NewsItemScreen> {
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(8,8,8,0),
-              child: Text("${widget.article.content}",
+              child: Text("${widget.article.content.substring(0, (widget.article.content.length)-13)}",
                   style: TextStyle(fontSize: 20,
                       color: Colors.black,fontFamily: 'Serif')),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: InkWell(
+                child: Text(
+                  "Read More",
+                  style: TextStyle(color: Colors.blueAccent, fontFamily: 'Serif', fontSize: 20),
+                ),
+                onTap: () => launch(widget.article.url),
+              ),
             )
           ],
         ),

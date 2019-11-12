@@ -46,7 +46,7 @@ class Articles {
     url = newsList['url'];
     urlToImage = newsList["urlToImage"] == null? "https://via.placeholder.com/700x500.jpg?text=Image+Not+Found" : newsList["urlToImage"] ;
     publishedAt = newsList['publishedAt'];
-    content = newsList['content'];
+    content = newsList['content'] == null? newsList["description"] : newsList['content'];
   }
 
 }

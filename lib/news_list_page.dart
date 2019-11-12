@@ -5,6 +5,8 @@ import 'loading_page.dart';
 import 'articles_list.dart';
 import 'news_item.dart';
 import 'network_helper.dart';
+import 'package:share/share.dart';
+
 
 class NewsListScreen extends StatefulWidget {
 
@@ -24,6 +26,8 @@ ArticleList articleListIndonesia = ArticleList.fromJson(newsDataIndonesia);
 
 
 class _NewsListScreenState extends State<NewsListScreen> {
+
+  String countryName;
   Future<Null> newNewsList()async{
   await Future.delayed(Duration(seconds:2));
     NetworkHelper helper = NetworkHelper(
@@ -42,12 +46,13 @@ class _NewsListScreenState extends State<NewsListScreen> {
             bottom: TabBar(
               isScrollable: true,
               indicatorColor: Colors.black,
+              
               tabs: <Widget>[
-                Text("INDIA", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400),),
-                Text("AUSTRALIA", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400),),
-                Text("USA", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400),),
-                Text("NEWZEALAND", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400),),
-                Text("INDONESIA", style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400),),
+                Text("INDIA", style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w400),),
+                Text("AUSTRALIA", style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w400),),
+                Text("USA", style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w400),),
+                Text("NEWZEALAND", style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w400),),
+                Text("INDONESIA", style: TextStyle(fontSize: 16, color: Colors.black, fontWeight: FontWeight.w400),),
               ],
             ),
             backgroundColor: Colors.white,
@@ -55,17 +60,17 @@ class _NewsListScreenState extends State<NewsListScreen> {
             title: Text("Fuser Times", style: TextStyle(fontSize: 32, fontFamily: "OldLondon",fontWeight: FontWeight.bold, color: Colors.black ),),
           ),
         body: TabBarView(children: <Widget>[
-          buildContainer(articleListIndia),
-          buildContainer(articleListAustralia),
-          buildContainer(articleListUSA),
-          buildContainer(articleListNewzealand),
-          buildContainer(articleListIndonesia)
+          newsItemsForIndividualCountries(articleListIndia, 'India'),
+          newsItemsForIndividualCountries(articleListAustralia, 'Australia'),
+          newsItemsForIndividualCountries(articleListUSA, 'USA'),
+          newsItemsForIndividualCountries(articleListNewzealand, 'Newzealand'),
+          newsItemsForIndividualCountries(articleListIndonesia, 'Indonesia')
         ],),
       ),
     );
   }
 
-  Container buildContainer(ArticleList articles) {
+  Container newsItemsForIndividualCountries(ArticleList articles, String countryName) {
     return Container(
       child: RefreshIndicator(
           onRefresh: newNewsList,
@@ -79,10 +84,10 @@ class _NewsListScreenState extends State<NewsListScreen> {
             int currentHours = DateTime.now().hour;
             return GestureDetector(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => NewsItemScreen(article)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NewsItemScreen(article, countryName)));
               },
               child: Card(
-                elevation: 2,
+                elevation: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: Column(
@@ -110,6 +115,8 @@ class _NewsListScreenState extends State<NewsListScreen> {
                             child: Container(
                               width: 100,
                               child: Hero(
+                                createRectTween: (Rect r1, Rect r2) =>
+                                  RectTween(begin: r1, end: r2),
                                 tag: "newsImage"+article.title,
                                  child: Image(
                                   fit: BoxFit.fill,
@@ -153,8 +160,13 @@ class _NewsListScreenState extends State<NewsListScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                Icon(Icons.share, size: 16),
-                                Icon(Icons.bookmark_border, size: 16)
+                                InkWell(
+                                    child: IconButton(
+                                    icon: Icon(Icons.share, size: 20, color: Colors.black38,),
+                                    onPressed:()=> Share.share(article.url),
+                                    ),
+                                ),
+                                
                               ],
                             ),
                           ),
